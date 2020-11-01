@@ -12,26 +12,48 @@ moment.locale('zh-cn');
 import './global.less';
 import styles from './App.less';
 import { routerData } from '@/router';
-import Nav from '@/layouts/Nav';
 import store from '@/store/store';
+import Login from '@/pages/login';
+import Home from './pages/home';
+import Main from '@/layouts/Main';
+
+interface IRouteProps {
+  path: string;
+  component: React.FC;
+}
+
+const PrivateRoute = (props: IRouteProps) => {
+  if (localStorage.getItem('token')) {
+    return <Route exact path={props.path} component={props.component} />;
+  } else {
+    return <Redirect to={{ pathname: '/login', state: { from: props.path } }} />;
+  }
+};
 
 const App = () => {
   return (
     <ConfigProvider locale={zhCN}>
       <Provider store={store}>
         <Router>
-          <Nav />
           <Suspense
             fallback={
               <div className={styles.loading}>
-                <Spin/>
+                <Spin />
               </div>
             }
           >
             <Switch>
-              {routerData.map((item) => {
-                return <Route exact path={item.path} component={item.component} key={item.path} />;
-              })}
+              <Route exact path={'/'} component={Home} />
+              <Route exact path="/login" component={Login} />
+              <Main>
+                <Route>
+                  <Switch>
+                    {routerData.map((item) => {
+                      return <PrivateRoute path={item.path} component={item.component} key={item.path} />;
+                    })}
+                  </Switch>
+                </Route>
+              </Main>
               <Redirect to="/" />
             </Switch>
           </Suspense>

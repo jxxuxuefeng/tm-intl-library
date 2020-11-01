@@ -47,7 +47,7 @@ request.interceptors.response.use(
   },
   (error) => {
     const { response, config } = error;
-    if (response) {
+    if (response && response.status) {
       notification.error({
         message: `请求错误 ${response.status}: ${config.url}`,
         description: codeMessage[response.status],

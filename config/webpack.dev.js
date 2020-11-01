@@ -6,6 +6,7 @@ const common = require('./webpack.common.js');
 const slash = require('slash');
 const getLocalIp = require('./getLocalIp');
 const host = getLocalIp();
+const proxy = require('./proxy');
 
 module.exports = merge(common, {
   mode: 'development',
@@ -28,7 +29,7 @@ module.exports = merge(common, {
                       .split('/')
                       .map((a) => a.replace(/([A-Z])/g, '-$1'))
                       .map((a) => a.toLowerCase());
-                    return `${'intl'}${arr.join('-')}-${localName}`.replace(/--/g, '-');
+                    return `${'tms-wiki'}${arr.join('-')}-${localName}`.replace(/--/g, '-');
                   }
                   return localName;
                 },
@@ -72,18 +73,7 @@ module.exports = merge(common, {
       // 添加构建模块信息
       modules: false,
     },
-    proxy: [
-      // 直连后端打开注释
-      {
-        context: [`/api/**`],
-        target: 'http://rest.apizza.net/mock/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': '',
-        },
-        cookieDomainRewrite: host,
-      },
-    ],
+    proxy: proxy['dev'],
   },
   plugins: [new webpack.HotModuleReplacementPlugin(), new ReactRefreshWebpackPlugin()].filter(Boolean),
 });

@@ -31,7 +31,7 @@ module.exports = merge(common, {
                       .split('/')
                       .map((a) => a.replace(/([A-Z])/g, '-$1'))
                       .map((a) => a.toLowerCase());
-                    return `${'intl'}${arr.join('-')}-${localName}`.replace(/--/g, '-');
+                    return `${'tms-wiki'}${arr.join('-')}-${localName}`.replace(/--/g, '-');
                   }
                   return localName;
                 },
