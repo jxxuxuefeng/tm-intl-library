@@ -3,7 +3,7 @@ import React, { lazy } from 'react';
 
 // 自定义
 interface IRouterConfig {
-  [propName: string]: React.LazyExoticComponent<() => JSX.Element>;
+  [propName: string]: React.LazyExoticComponent<any>;
 }
 
 // 路由和组件的映射关系

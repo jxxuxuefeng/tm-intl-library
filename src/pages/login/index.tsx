@@ -8,8 +8,8 @@ import { RouteComponentProps } from 'react-router-dom';
 const Login: React.FC<RouteComponentProps> = (props) => {
   const login = () => {
     localStorage.setItem('token', '8888');
-    const from = props.location?.state?.from || '/';
-    props.history.push(from);
+    const state = props.location.state;
+    props.history.push(state?.from || '/');
   };
 
   const logout = () => {
